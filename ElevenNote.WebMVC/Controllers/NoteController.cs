@@ -1,4 +1,5 @@
 ﻿using ElevenNote.Models;
+using ElevenNote.Models.NoteModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,23 @@ namespace ElevenNote.WebMVC.Controllers
         public ActionResult Index()
         {
             var model = new NoteListItem[0];
+            return View(model);
+        }
+
+        //GET: Note/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(NoteCreate model)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
             return View(model);
         }
     }
