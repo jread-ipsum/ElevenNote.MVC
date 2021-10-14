@@ -29,6 +29,7 @@ namespace ElevenNote.WebMVC.Controllers
             return View();
         }
 
+        //POST: Note/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(NoteCreate model)
@@ -48,6 +49,7 @@ namespace ElevenNote.WebMVC.Controllers
             return View(model);
         }
 
+        //GET: Note/Details{id}
         public ActionResult Details(int id)
         {
             var svc = CreateNoteService();
@@ -56,6 +58,7 @@ namespace ElevenNote.WebMVC.Controllers
             return View(model);
         }
 
+        //GET: Note/Edit/{id}
         public ActionResult Edit(int id)
         {
             var service = CreateNoteService();
@@ -71,6 +74,7 @@ namespace ElevenNote.WebMVC.Controllers
 
         }
 
+        //POST: Note/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, NoteEdit model)
@@ -93,6 +97,30 @@ namespace ElevenNote.WebMVC.Controllers
 
             ModelState.AddModelError("", "Your note could not be updated.");
             return View(model);
+        }
+
+        //GET: Note/Delete/{id}
+        public ActionResult Delete(int id)
+        {
+            var svc = CreateNoteService();
+            var model = svc.GetNoteById(id);
+
+            return View(model);
+        }
+
+        //POST: Note/Delete/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
+        public ActionResult DeletePost(int id)
+        {
+            var service = CreateNoteService();
+
+            service.DeleteNote(id);
+
+            TempData["SaveResult"] = "Your note was deleted.";
+
+            return RedirectToAction("Index");
         }
 
         private NoteService CreateNoteService()
