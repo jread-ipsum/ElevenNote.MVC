@@ -36,7 +36,7 @@ namespace ElevenNote.WebMVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-             var service = CreateNoteService();
+            var service = CreateNoteService();
 
             if (service.CreateNote(model))
             {
@@ -53,6 +53,20 @@ namespace ElevenNote.WebMVC.Controllers
             var svc = CreateNoteService();
             var model = svc.GetNoteById(id);
 
+            return View(model);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var service = CreateNoteService();
+            var detail = service.GetNoteById(id);
+            var model =
+                new NoteEdit
+                {
+                    NoteId = detail.NoteId,
+                    Title = detail.Title,
+                    Content = detail.Content
+                };
             return View(model);
         }
 
