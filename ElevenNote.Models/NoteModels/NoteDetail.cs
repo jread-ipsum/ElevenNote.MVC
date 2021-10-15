@@ -13,6 +13,8 @@ namespace ElevenNote.Models.NoteModels
         public string Title { get; set; }
         public string Content { get; set; }
 
+        public int? CategoryId { get; set; }
+
         [Display(Name ="Category")]
         public string CategoryName  { get; set; }
 
