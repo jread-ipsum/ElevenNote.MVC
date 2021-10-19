@@ -96,6 +96,30 @@ namespace ElevenNote.WebMVC.Controllers
             return View(model);
         }
 
+        //GET: Category/Delete/{Id}
+        public ActionResult Delete(int id)
+        {
+            var svc = CreateCategoryService();
+            var model = svc.GetCategoryById(id);
+
+            return View(model);
+        }
+
+        //POST: Category/Delete/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
+        public ActionResult DeletePost(int id)
+        {
+            var svc = CreateCategoryService();
+
+            svc.DeleteCategory(id);
+
+            TempData["SaveResult"] = "Your category was deleted.";
+
+            return RedirectToAction("Index");
+        }
+
         private CategoryService CreateCategoryService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());

@@ -88,5 +88,20 @@ namespace ElevenNote.Services
                 return ctx.SaveChanges() == 1;
             }
         }
+
+        public bool DeleteCategory(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                    .Categories
+                    .Single(e => e.CategoryId == id && e.OwnerId == _userId);
+
+                ctx.Categories.Remove(entity);
+
+                return ctx.SaveChanges() == 1;
+            }
+        }
     }
 }
