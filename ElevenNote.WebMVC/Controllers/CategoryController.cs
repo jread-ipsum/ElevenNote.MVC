@@ -27,7 +27,7 @@ namespace ElevenNote.WebMVC.Controllers
             return View();
         }
 
-        //POST: Note/Create
+        //POST: Category/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(CategoryCreate model)
@@ -44,6 +44,55 @@ namespace ElevenNote.WebMVC.Controllers
             }
             ModelState.AddModelError("", "Category could not be created.");
 
+            return View(model);
+        }
+
+        //GET: Category/Details/{id}
+        public ActionResult Details(int id)
+        {
+            var svc = CreateCategoryService();
+            var model = svc.GetCategoryById(id);
+
+            return View(model);
+        }
+
+        //GET: Category/Edit/{id}
+        public ActionResult Edit(int id)
+        {
+            var svc = CreateCategoryService();
+            var detail = svc.GetCategoryById(id);
+            var model =
+                new CategoryEdit
+                {
+                    CategoryId = detail.CategoryId,
+                    Name = detail.Name
+                };
+            return View(model);
+        }
+
+        //POST: Category/Edit/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, CategoryEdit model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            if(model.CategoryId != id)
+            {
+                ModelState.AddModelError("", "Id Mismatch");
+                return View(model);
+            }
+
+            var svc = CreateCategoryService();
+
+            if(svc.UpdateCategory(model))
+            {
+                TempData["SaveResult"] = "Your category was updated.";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", "Your category could not be updated.");
             return View(model);
         }
 

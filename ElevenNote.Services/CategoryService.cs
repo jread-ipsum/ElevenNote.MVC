@@ -15,7 +15,7 @@ namespace ElevenNote.Services
 
         public CategoryService(Guid userId)
         {
-            userId = _userId;
+            _userId = userId;
         }
 
         public bool CreateCategory(CategoryCreate model)
@@ -23,7 +23,8 @@ namespace ElevenNote.Services
             var entity =
                 new Category()
                 {
-                    Name = model.CategoryName,
+                    OwnerId = _userId,
+                    Name = model.Name,
                     CreatedUtc = DateTimeOffset.Now
                 };
 
@@ -46,10 +47,45 @@ namespace ElevenNote.Services
                    new CategoryListItem
                    {
                        CategoryId = e.CategoryId,
-                       CategoryName = e.Name,
+                       Name = e.Name,
                        CreatedUtc = e.CreatedUtc
                    });
                 return query.ToArray();
+            }
+        }
+
+        public CategoryDetail GetCategoryById(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                    .Categories
+                    .Single(e => e.CategoryId == id && e.OwnerId == _userId);
+                return
+                    new CategoryDetail
+                    {
+                        CategoryId = entity.CategoryId,
+                        Name = entity.Name,
+                        CreatedUtc = entity.CreatedUtc,
+                        ModifiedUtc = entity.ModifiedUtc
+                    };
+            }
+        }
+
+        public bool UpdateCategory(CategoryEdit model)
+        {
+            using(var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                    .Categories
+                    .Single(e => e.CategoryId == model.CategoryId && e.OwnerId == _userId);
+
+                entity.Name = model.Name;
+                entity.ModifiedUtc = DateTimeOffset.UtcNow;
+
+                return ctx.SaveChanges() == 1;
             }
         }
     }

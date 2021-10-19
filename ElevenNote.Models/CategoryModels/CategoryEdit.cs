@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace ElevenNote.Models.CategoryModels
 {
-    public class CategoryListItem
+    public class CategoryEdit
     {
         public int CategoryId { get; set; }
         public string Name { get; set; }
-        public DateTimeOffset CreatedUtc { get; set; }
+
+
     }
 }

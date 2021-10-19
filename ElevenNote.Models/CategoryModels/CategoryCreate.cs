@@ -8,6 +8,6 @@ namespace ElevenNote.Models.CategoryModels
 {
     public class CategoryCreate
     {
-        public string CategoryName { get; set; }
+        public string Name { get; set; }
     }
 }
