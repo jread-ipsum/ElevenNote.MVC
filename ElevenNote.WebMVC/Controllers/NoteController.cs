@@ -12,7 +12,7 @@ namespace ElevenNote.WebMVC.Controllers
 {
     [Authorize]
     public class NoteController : Controller
-    {
+    { 
         // GET: Note
         public ActionResult Index()
         {
@@ -25,7 +25,12 @@ namespace ElevenNote.WebMVC.Controllers
         //GET: Note/Create
         public ActionResult Create()
         {
-            return View();
+            var svc = CreateNoteService();
+            var model = new NoteCreate();
+
+            model.Categories = svc.CategoryListItems();
+
+            return View(model);
         }
 
         //POST: Note/Create
@@ -62,6 +67,7 @@ namespace ElevenNote.WebMVC.Controllers
         {
             var service = CreateNoteService();
             var detail = service.GetNoteById(id);
+            
             var model =
                 new NoteEdit
                 {

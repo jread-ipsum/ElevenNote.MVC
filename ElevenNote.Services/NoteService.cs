@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace ElevenNote.Services
 {
@@ -15,6 +16,20 @@ namespace ElevenNote.Services
         public NoteService(Guid userId)
         {
             _userId = userId;
+        }
+
+        public IEnumerable<SelectListItem> CategoryListItems()
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var listItems = ctx.Categories.Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.CategoryId.ToString()
+                });
+
+                return listItems.ToArray();
+            }
         }
 
         public bool CreateNote(NoteCreate model)
