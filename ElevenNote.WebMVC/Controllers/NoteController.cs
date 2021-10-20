@@ -75,6 +75,7 @@ namespace ElevenNote.WebMVC.Controllers
                     Title = detail.Title,
                     Content = detail.Content,
                     CategoryId = detail.CategoryId,
+                    Categories = service.CategoryListItems()
                 };
             return View(model);
 
